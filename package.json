@@ -1,0 +1,56 @@
+{
+  "name": "vitest-browser-vue",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "Wrapper around @vue/test-utils for Vitest's Browser Mode",
+  "author": "Vitest Team",
+  "license": "MIT",
+  "funding": "https://opencollective.com/vitest",
+  "homepage": "https://github.com/vitest-dev/vitest-browser-vue#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vitest-dev/vitest-browser-vue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vitest-dev/vitest-browser-vue/issues"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "*.d.ts",
+    "*.mjs",
+    "dist"
+  ],
+  "engines": {
+    "node": "^18.0.0 || >=20.0.0"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch --sourcemap"
+  },
+  "peerDependencies": {
+    "@vitest/browser": "^2.0.5",
+    "vitest": "^2.0.5",
+    "vue": "^3.0.0"
+  },
+  "dependencies": {
+    "@vitest/pretty-format": "^2.0.5",
+    "@vue/test-utils": "^2.4.6",
+    "vitest-browser-utils": "^0.0.1"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.24.1",
+    "@vitest/browser": "^2.0.5",
+    "eslint": "^9.8.0",
+    "tsup": "^8.2.4",
+    "vitest": "^2.0.5",
+    "vue": "^3.4.35"
+  }
+}
