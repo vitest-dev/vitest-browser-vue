@@ -47,9 +47,7 @@ test('counter button increments the count', async () => {
     }
   })
 
-  // or
   screen.cleanup()
-  page.cleanup()
 })
 ```
 
