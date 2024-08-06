@@ -7,7 +7,7 @@ export type { ComponentRenderOptions, Screen } from './pure'
 
 page.extend({
   render,
-  cleanup,
+  [Symbol.for('vitest:component-cleanup')]: cleanup,
 })
 
 beforeEach(() => {
