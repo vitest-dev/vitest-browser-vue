@@ -6,6 +6,7 @@ export { render, cleanup } from './pure'
 
 page.extend({
   render,
+  cleanup,
 })
 
 beforeEach(() => {
@@ -15,5 +16,6 @@ beforeEach(() => {
 declare module '@vitest/browser/context' {
   interface BrowserPage {
     render: typeof render
+    cleanup: typeof cleanup
   }
 }
