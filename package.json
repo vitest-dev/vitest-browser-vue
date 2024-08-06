@@ -33,7 +33,8 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch --sourcemap"
+    "dev": "tsup --watch --sourcemap",
+    "lint": "eslint . --fix"
   },
   "peerDependencies": {
     "@vitest/browser": "^2.0.5",
@@ -50,6 +51,7 @@
     "@vitest/browser": "^2.0.5",
     "eslint": "^9.8.0",
     "tsup": "^8.2.4",
+    "typescript": "^5.5.4",
     "vitest": "^2.0.5",
     "vue": "^3.4.35"
   }

@@ -1,6 +1,6 @@
 import { page } from '@vitest/browser/context'
-import { render, cleanup } from './pure'
 import { beforeEach } from 'vitest'
+import { cleanup, render } from './pure'
 
 export { render, cleanup } from './pure'
 export type { ComponentRenderOptions, Screen } from './pure'
@@ -17,6 +17,5 @@ beforeEach(() => {
 declare module '@vitest/browser/context' {
   interface BrowserPage {
     render: typeof render
-    cleanup: typeof cleanup
   }
 }
