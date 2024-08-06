@@ -12,11 +12,12 @@ const mountedWrappers = new Set<VueWrapper>()
 export interface Screen<Props> extends LocatorSelectors {
   container: HTMLElement
   baseElement: HTMLElement
-  debug: (el?: HTMLElement | HTMLElement[] | Locator | Locator[], maxLength?: number, options?: PrettyFormatOptions) => void
-  unmount: () => void
-  html: () => string
-  emitted: (name: string) => any
-  rerender: (props: Partial<Props>) => void
+  debug(el?: HTMLElement | HTMLElement[] | Locator | Locator[], maxLength?: number, options?: PrettyFormatOptions): void
+  unmount(): void
+  html(): string
+  emitted<T = unknown>(): Record<string, T[]>;
+  emitted<T = unknown[]>(eventName: string): undefined | T[];
+  rerender(props: Partial<Props>): void
 }
 
 export interface ComponentRenderOptions<C, P extends ComponentProps<C>> extends Omit<ComponentMountingOptions<C, P>, 'attachTo'> {
