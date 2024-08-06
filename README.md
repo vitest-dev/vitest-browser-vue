@@ -51,7 +51,7 @@ test('counter button increments the count', async () => {
 })
 ```
 
-Unlike `@testing-library/vue`, `vitest-browser-vue` cleanups the component before test starts instead of after so you can see the rendered result in your UI.
+Unlike `@testing-library/vue`, `vitest-browser-vue` cleans up the component before the test starts instead of after, so you can see the rendered result in your UI.
 
 ## Special thanks
 
