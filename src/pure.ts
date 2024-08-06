@@ -19,7 +19,7 @@ export interface Screen<Props> extends LocatorSelectors {
   rerender: (props: Partial<Props>) => void
 }
 
-export interface ComponentRenderOptions<C, P extends ComponentProps<C>> extends ComponentMountingOptions<C, P> {
+export interface ComponentRenderOptions<C, P extends ComponentProps<C>> extends Omit<ComponentMountingOptions<C, P>, 'attachTo'> {
   container?: HTMLElement
   baseElement?: HTMLElement
 }
