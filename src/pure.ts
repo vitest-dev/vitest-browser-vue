@@ -10,7 +10,7 @@ type ComponentProps<T> = T extends new (...angs: any) => {
 
 const mountedWrappers = new Set<VueWrapper>()
 
-export interface Screen<Props> extends LocatorSelectors {
+export interface RenderResult<Props> extends LocatorSelectors {
   container: HTMLElement
   baseElement: HTMLElement
   debug(el?: HTMLElement | HTMLElement[] | Locator | Locator[], maxLength?: number, options?: PrettyDOMOptions): void
@@ -36,7 +36,7 @@ export function render<T, C = T extends ((...args: any) => any) | (new (...args:
     baseElement: customBaseElement,
     ...mountOptions
   }: ComponentRenderOptions<C, P> = {},
-): Screen<P> {
+): RenderResult<P> {
   const div = document.createElement('div')
   const baseElement = customBaseElement || customContainer || document.body
   const container = customContainer || baseElement.appendChild(div)
