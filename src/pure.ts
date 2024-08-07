@@ -13,10 +13,11 @@ const mountedWrappers = new Set<VueWrapper>()
 export interface Screen<Props> extends LocatorSelectors {
   container: HTMLElement
   baseElement: HTMLElement
-  debug: (el?: HTMLElement | HTMLElement[] | Locator | Locator[], maxLength?: number, options?: PrettyFormatOptions) => void
-  unmount: () => void
-  emitted: (<T = unknown>() => Record<string, T[]>) & (<T = unknown[]>(eventName: string) => undefined | T[])
-  rerender: (props: Partial<Props>) => void
+  debug(el?: HTMLElement | HTMLElement[] | Locator | Locator[], maxLength?: number, options?: PrettyFormatOptions): void
+  unmount(): void
+  emitted<T = unknown>(): Record<string, T[]>
+  emitted<T = unknown[]>(eventName: string): undefined | T[]
+  rerender(props: Partial<Props>): void
 }
 
 export interface ComponentRenderOptions<C, P extends ComponentProps<C>> extends Omit<ComponentMountingOptions<C, P>, 'attachTo'> {
@@ -49,14 +50,14 @@ export function render<T, C = T extends ((...args: any) => any) | (new (...args:
   // https://github.com/vuejs/vue-test-utils-next/blob/master/src/mount.ts#L309
   unwrapNode((wrapper as any).parentElement)
 
-  mountedWrappers.add(wrapper)
+  mountedWrappers.add(wrapper as any)
 
   return {
     container,
     baseElement,
     debug: (el = baseElement, maxLength, options) => debug(el, maxLength, options),
     unmount: () => wrapper.unmount(),
-    emitted: name => wrapper.emitted(name),
+    emitted: ((name?: string) => wrapper.emitted(name as string)) as any,
     rerender: props => wrapper.setProps(props as any),
     ...getElementLocatorSelectors(baseElement),
   }

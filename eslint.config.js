@@ -14,6 +14,7 @@ export default antfu(
       'no-empty-pattern': 'off',
       'antfu/indent-binary-ops': 'off',
       'unused-imports/no-unused-imports': 'error',
+      'ts/method-signature-style': 'off',
       'style/member-delimiter-style': [
         'error',
         {
