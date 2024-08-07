@@ -20,7 +20,7 @@ export interface Screen<Props> extends LocatorSelectors {
   rerender(props: Partial<Props>): void
 }
 
-export interface ComponentRenderOptions<C, P extends ComponentProps<C>> extends Omit<ComponentMountingOptions<C, P>, 'attachTo'> {
+export interface ComponentRenderOptions<C, P extends ComponentProps<C>> extends ComponentMountingOptions<C, P> {
   container?: HTMLElement
   baseElement?: HTMLElement
 }
@@ -40,6 +40,10 @@ export function render<T, C = T extends ((...args: any) => any) | (new (...args:
   const div = document.createElement('div')
   const baseElement = customBaseElement || customContainer || document.body
   const container = customContainer || baseElement.appendChild(div)
+
+  if (mountOptions.attachTo) {
+    throw new Error('`attachTo` is not supported, use `container` instead')
+  }
 
   const wrapper = mount(Component, {
     ...mountOptions,

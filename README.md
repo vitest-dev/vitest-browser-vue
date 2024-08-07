@@ -11,7 +11,7 @@ import { expect, test } from 'vitest'
 test('counter button increments the count', async () => {
   const screen = render(Component, {
     props: {
-      count: 1,
+      initialCount: 1,
     }
   })
 
@@ -43,7 +43,7 @@ import { page } from '@vitest/browser/context'
 test('counter button increments the count', async () => {
   const screen = page.render(Component, {
     props: {
-      count: 1,
+      initialCount: 1,
     }
   })
 
