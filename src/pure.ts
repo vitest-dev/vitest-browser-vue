@@ -1,7 +1,7 @@
 import type { Locator, LocatorSelectors } from '@vitest/browser/context'
 import { type ComponentMountingOptions, type VueWrapper, mount } from '@vue/test-utils'
 import type { DefineComponent } from 'vue'
-import { type PrettyFormatOptions, debug, getElementLocatorSelectors } from 'vitest-browser-utils'
+import { type PrettyDOMOptions, debug, getElementLocatorSelectors } from '@vitest/browser/utils'
 
 type ComponentProps<T> = T extends new (...angs: any) => {
   $props: infer P
@@ -13,7 +13,7 @@ const mountedWrappers = new Set<VueWrapper>()
 export interface Screen<Props> extends LocatorSelectors {
   container: HTMLElement
   baseElement: HTMLElement
-  debug(el?: HTMLElement | HTMLElement[] | Locator | Locator[], maxLength?: number, options?: PrettyFormatOptions): void
+  debug(el?: HTMLElement | HTMLElement[] | Locator | Locator[], maxLength?: number, options?: PrettyDOMOptions): void
   unmount(): void
   emitted<T = unknown>(): Record<string, T[]>
   emitted<T = unknown[]>(eventName: string): undefined | T[]
