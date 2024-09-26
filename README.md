@@ -33,6 +33,10 @@ export default defineConfig({
     // "compilerOptions.types" in your tsconfig or
     // import `vitest-browser-vue` manually so TypeScript can pick it up
     setupFiles: ['vitest-browser-vue'],
+    browser: {
+      browser: 'chromium',
+      enabled: true,
+    },
   },
 })
 ```
