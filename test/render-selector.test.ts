@@ -6,7 +6,7 @@ import HelloWorld from './fixtures/HelloWorld.vue'
 const testIdAttribute = server.config.browser.locators.testIdAttribute
 
 test('should apply and use a unique testid as the root selector when it does not exists', async () => {
-  const screen = render(HelloWorld)
+  const screen = await render(HelloWorld)
   const selector = page.elementLocator(screen.baseElement).selector
 
   const regexp = new RegExp(`^internal:testid=\\[${testIdAttribute}="__vitest_\\d+__"s\\]$`)
@@ -14,7 +14,7 @@ test('should apply and use a unique testid as the root selector when it does not
 })
 
 test('should apply and use a unique testid as the locator selector when using default container', async () => {
-  const screen = render(HelloWorld)
+  const screen = await render(HelloWorld)
 
   const regexp = new RegExp(`^internal:testid=\\[${testIdAttribute}="__vitest_\\d+__"s\\]$`)
   expect(screen.locator.selector).toMatch(regexp)
@@ -25,7 +25,7 @@ test('should apply even if baseElement and container are provided', async () => 
   const customContainer = document.createElement('div')
   customBase.appendChild(customContainer)
 
-  const screen = render(HelloWorld, {
+  const screen = await render(HelloWorld, {
     baseElement: document.body.appendChild(customBase),
     container: customContainer,
   })
@@ -38,7 +38,7 @@ test('should apply even if baseElement and container are provided', async () => 
 test('should not override testid attribute if already set', async () => {
   document.body.setAttribute(testIdAttribute, 'custom-id')
 
-  const screen = render(HelloWorld)
+  const screen = await render(HelloWorld)
   const selector = page.elementLocator(screen.baseElement).selector
 
   expect(selector).toBe(`internal:testid=[${testIdAttribute}="custom-id"s]`)

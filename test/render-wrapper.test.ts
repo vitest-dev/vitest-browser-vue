@@ -132,14 +132,14 @@ test('wrapper: undefined does not disable a globally configured wrapper', async 
   await expect.element(screen.getByText('Still wrapped')).toBeVisible()
 })
 
-test('throws when attachTo is combined with wrapper', () => {
-  expect(() => render(Label, {
+test('throws when attachTo is combined with wrapper', async () => {
+  await expect(render(Label, {
     wrapper: Provider,
     attachTo: document.body,
     props: {
       label: 'Nope',
     },
-  })).toThrow('`attachTo` is not supported, use `container` instead')
+  })).rejects.toThrow('`attachTo` is not supported, use `container` instead')
 })
 
 test('rerender does not remount or alter the wrapper component', async () => {

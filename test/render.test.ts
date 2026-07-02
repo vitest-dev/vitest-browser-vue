@@ -13,13 +13,13 @@ config.global.components = {
 }
 
 test('renders simple component', async () => {
-  const screen = render(HelloWorld)
+  const screen = await render(HelloWorld)
   await expect.element(page.getByText('Hello World')).toBeVisible()
   expect(screen.container).toMatchSnapshot()
 })
 
 test('renders counter', async () => {
-  const screen = render(Counter, {
+  const screen = await render(Counter, {
     props: {
       initialCount: 1,
     },
@@ -31,7 +31,7 @@ test('renders counter', async () => {
 })
 
 test('renders slot', async () => {
-  const screen = render(Slot, {
+  const screen = await render(Slot, {
     slots: {
       // TODO: using slots prints "decodeEntities option is passed but will be ignored in non-browser builds."
       default: 'Hello World',
@@ -41,7 +41,7 @@ test('renders slot', async () => {
 })
 
 test('renders complex slot', async () => {
-  const screen = render(Slot, {
+  const screen = await render(Slot, {
     slots: {
       default: '<button>Hello World</button>',
     },
@@ -50,14 +50,14 @@ test('renders complex slot', async () => {
 })
 
 test('injected component works', async () => {
-  const screen = render({
+  const screen = await render({
     template: '<InjectedGlobalComponent />',
   })
   await expect.element(screen.getByText('Global Component')).toBeVisible()
 })
 
 test('renders async component', async () => {
-  const screen = render({
+  const screen = await render({
     components: { Async },
     // for some reason, @vue/test-utils can only render suspense
     // if it's wrapped in another element (a div in this case)
@@ -66,10 +66,7 @@ test('renders async component', async () => {
   await expect.element(screen.getByText('Hello Async World')).toBeVisible()
 })
 
-// test trace output by:
-// pnpm test render.test.ts --browser=chromium -t trace --browser.trace=on --run
-// pnpm playwright show-trace test/__traces__/render.test.ts/vue--chromium--trace-mark-with-await-0-0.trace.zip
-test('trace mark with await', async () => {
+test('trace mark', async () => {
   const screen = await render(Counter, {
     props: {
       initialCount: 1,

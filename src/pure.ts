@@ -40,18 +40,12 @@ export interface RenderResult<Props> extends LocatorSelectors {
   debug(el?: HTMLElement | HTMLElement[] | Locator | Locator[], maxLength?: number, options?: PrettyDOMOptions): void
   /**
    * Unmount the component. Also records a `vue.unmount` trace mark.
-   *
-   * Synchronous usage is deprecated and will be removed in the next major version.
-   * Please use `await unmount()` instead of `unmount()`.
    */
   unmount(): Promise<void>
   emitted<T = unknown>(): Record<string, T[]>
   emitted<T = unknown[]>(eventName: string): undefined | T[]
   /**
    * Update the component props. Also records a `vue.rerender` trace mark.
-   *
-   * Synchronous usage is deprecated and will be removed in the next major version.
-   * Please use `await rerender(props)` instead of `rerender(props)`.
    */
   rerender(props: Partial<Props>): Promise<void>
 }
@@ -109,11 +103,8 @@ function wrapComponentIfNeeded<T, C, P extends ComponentProps<C>>(
 /**
  * Render a Vue component into the document.
  * Also records a `vue.render` trace mark.
- *
- * Synchronous usage is deprecated and will be removed in the next major version.
- * Please use `await render(Component)` instead of `render(Component)`.
  */
-export function render<T, C = T extends ((...args: any) => any) | (new (...args: any) => any) ? T : T extends {
+export async function render<T, C = T extends ((...args: any) => any) | (new (...args: any) => any) ? T : T extends {
   props?: infer Props
 } ? DefineComponent<Props extends Readonly<(infer PropNames)[]> | (infer PropNames)[] ? {
     [key in PropNames extends string ? PropNames : string]?: any;
@@ -125,7 +116,7 @@ export function render<T, C = T extends ((...args: any) => any) | (new (...args:
     wrapper: wrapperOption,
     ...mountOptions
   }: ComponentRenderOptions<C, P> = {},
-): RenderResult<P> & PromiseLike<RenderResult<P>> {
+): Promise<RenderResult<P>> {
   const baseElement = customBaseElement || customContainer || document.body
   const container = customContainer || baseElement.appendChild(document.createElement('div'))
 
@@ -161,9 +152,9 @@ export function render<T, C = T extends ((...args: any) => any) | (new (...args:
     baseElement,
     locator: page.elementLocator(container),
     debug: (el = baseElement, maxLength, options) => debug(el, maxLength, options),
-    unmount: () => {
+    unmount: async () => {
       mounted.unmount()
-      return markThenable(renderResult.locator, 'vue.unmount', renderResult.unmount, undefined) as any
+      await mark(renderResult.locator, 'vue.unmount', renderResult.unmount)
     },
     emitted: ((name?: string) => resolveEmittedWrapper(
       mounted,
@@ -178,33 +169,23 @@ export function render<T, C = T extends ((...args: any) => any) | (new (...args:
       else {
         await mounted.setProps(props as any)
       }
-      return markThenable(renderResult.locator, 'vue.rerender', renderResult.rerender, undefined) as any
+      await mark(renderResult.locator, 'vue.rerender', renderResult.rerender)
     },
     ...getElementLocatorSelectors(baseElement),
   }
-  return { ...renderResult, ...markThenable(renderResult.locator, 'vue.render', render, renderResult) }
+  await mark(renderResult.locator, 'vue.render', render)
+  return renderResult
 }
 
-// implement auto trace marking when users called `then` i.e. `await render(...)`
-function markThenable<T>(locator: Locator, name: string, fn: Function, value: T): PromiseLike<T> {
+async function mark(locator: Locator, name: string, fn: Function): Promise<void> {
   if (!locator.mark) {
-    return Promise.resolve(value)
+    return
   }
   const error = new Error(name)
   if ('captureStackTrace' in Error) {
     (Error as any).captureStackTrace(error, fn)
   }
-  return {
-    async then(onfulfilled, onrejected) {
-      try {
-        await locator.mark(name, error)
-        return Promise.resolve(value).then(onfulfilled, onrejected)
-      }
-      catch (e) {
-        return Promise.reject(e).then(onfulfilled, onrejected)
-      }
-    },
-  }
+  await locator.mark(name, error)
 }
 
 export function cleanup(): void {
