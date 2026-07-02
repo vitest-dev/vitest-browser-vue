@@ -1,5 +1,5 @@
 import { afterEach, expect, test } from 'vitest'
-import { configure, render } from 'vitest-browser-vue'
+import { configureRender, render } from 'vitest-browser-vue'
 import Emitter from './fixtures/Emitter.vue'
 import InnerProvider from './fixtures/InnerProvider.vue'
 import Label from './fixtures/Label.vue'
@@ -8,7 +8,7 @@ import Provider from './fixtures/Provider.vue'
 import Slot from './fixtures/Slot.vue'
 
 afterEach(() => {
-  configure({ wrapper: undefined })
+  configureRender({ wrapper: undefined })
 })
 
 test('renders component inside wrapper', async () => {
@@ -52,7 +52,7 @@ test('wrapper forwards slots to the component under test', async () => {
 })
 
 test('uses wrapper configured globally', async () => {
-  configure({ wrapper: Provider })
+  configureRender({ wrapper: Provider })
 
   const screen = await render(Label, {
     props: {
@@ -65,7 +65,7 @@ test('uses wrapper configured globally', async () => {
 })
 
 test('per-render wrapper overrides global wrapper', async () => {
-  configure({ wrapper: OuterProvider })
+  configureRender({ wrapper: OuterProvider })
 
   const screen = await render(Label, {
     wrapper: InnerProvider,
@@ -97,8 +97,8 @@ test('emitted() returns undefined when the event was not emitted', async () => {
   expect(screen.emitted('submit')).toBeUndefined()
 })
 
-test('configure({ wrapper: undefined }) clears the global wrapper', async () => {
-  configure({ wrapper: Provider })
+test('configureRender({ wrapper: undefined }) clears the global wrapper', async () => {
+  configureRender({ wrapper: Provider })
 
   await render(Label, {
     props: {
@@ -106,7 +106,7 @@ test('configure({ wrapper: undefined }) clears the global wrapper', async () => 
     },
   })
 
-  configure({ wrapper: undefined })
+  configureRender({ wrapper: undefined })
 
   const screen = await render(Label, {
     props: {
@@ -119,7 +119,7 @@ test('configure({ wrapper: undefined }) clears the global wrapper', async () => 
 })
 
 test('wrapper: undefined does not disable a globally configured wrapper', async () => {
-  configure({ wrapper: Provider })
+  configureRender({ wrapper: Provider })
 
   const screen = await render(Label, {
     wrapper: undefined,

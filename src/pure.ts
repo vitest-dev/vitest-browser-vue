@@ -20,7 +20,7 @@ const renderConfig: RenderConfiguration = {}
  *
  * Available from `vitest-browser-vue/pure` (recommended in setup files).
  */
-export function configure(customConfig: Partial<RenderConfiguration>): void {
+export function configureRender(customConfig: Partial<RenderConfiguration>): void {
   Object.assign(renderConfig, customConfig)
 }
 
@@ -63,7 +63,7 @@ export interface ComponentRenderOptions<C, P extends ComponentProps<C>> extends 
    * Pass a Vue component as the `wrapper` option to have it rendered around the inner element.
    * The wrapper must expose a default slot for the component under test.
    *
-   * Per-render `wrapper` takes precedence over the value set via {@link configure}.
+   * Per-render `wrapper` takes precedence over the value set via {@link configureRender}.
    */
   wrapper?: WrapperComponent
 }
@@ -228,11 +228,11 @@ interface WrappedMountTarget<T, C, P extends ComponentProps<C>> {
   sutProps?: Record<string, unknown>
 }
 
-function resolveEmittedWrapper(mounted: VueWrapper, Component: Component, fromSut: boolean): VueWrapper {
+function resolveEmittedWrapper(mounted: VueWrapper<any>, Component: Component, fromSut: boolean): VueWrapper<any> {
   if (!fromSut) {
     return mounted
   }
 
-  const sut = mounted.findComponent(Component)
+  const sut = mounted.findComponent(Component as any)
   return sut.exists() ? sut : mounted
 }

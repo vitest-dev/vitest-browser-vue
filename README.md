@@ -74,7 +74,7 @@ config.global.mocks = {
 
 Pass a Vue component as the `wrapper` option to render it around the component under test. The wrapper must expose a default slot. This is useful for reusable provider setup (for example `UApp`, `ElConfigProvider`, or your own context providers).
 
-Per-render `wrapper` takes precedence over the value set via `configure`.
+Per-render `wrapper` takes precedence over the value set via `configureRender`.
 
 ```ts
 import { render } from 'vitest-browser-vue'
@@ -93,10 +93,10 @@ await screen.rerender({ title: 'Updated' })
 You can also configure a default wrapper globally in your Vitest setup file:
 
 ```ts
-import { configure } from 'vitest-browser-vue/pure'
+import { configureRender } from 'vitest-browser-vue/pure'
 import { ThemeProvider } from 'my-ui-lib'
 
-configure({
+configureRender({
   wrapper: ThemeProvider,
 })
 ```
@@ -105,10 +105,10 @@ When using a global wrapper in tests, reset it in `afterEach` to avoid leaking c
 
 ```ts
 import { afterEach } from 'vitest'
-import { configure } from 'vitest-browser-vue/pure'
+import { configureRender } from 'vitest-browser-vue/pure'
 
 afterEach(() => {
-  configure({ wrapper: undefined })
+  configureRender({ wrapper: undefined })
 })
 ```
 
