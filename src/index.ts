@@ -2,8 +2,8 @@ import { page } from 'vitest/browser'
 import { beforeEach } from 'vitest'
 import { cleanup, render } from './pure'
 
-export { render, cleanup, config } from './pure'
-export type { ComponentRenderOptions, RenderResult } from './pure'
+export { render, cleanup, config, configureRender } from './pure'
+export type { ComponentRenderOptions, RenderConfiguration, RenderResult, WrapperComponent } from './pure'
 
 page.extend({
   render,
